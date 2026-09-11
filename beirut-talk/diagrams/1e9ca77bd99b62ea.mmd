@@ -1,0 +1,48 @@
+%%{init: {"flowchart": {"nodeSpacing": 30, "rankSpacing": 40, "padding": 8, "diagramPadding": 4}, "themeCSS": "marker { overflow: visible !important; } marker path { transform-box: fill-box !important; transform-origin: center !important; transform: scale(1.25) !important; }"}}%%
+flowchart LR
+  BAL["Balance integrity"]
+
+  BAL --> BS["Binding-signature<br/>balance"]
+  BAL --> NCB["Note-commitment<br/>binding"]
+  BAL --> MERK["Merkle-path<br/>binding"]
+  BAL --> KB["Key<br/>binding"]
+
+  DL{{"<span style='display:block; height:0.5em'></span>Discrete log<span style='display:block; height:0.5em'></span>"}}
+
+  BS --->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/BindingSignature/Balance.lean'>non-balancing<br/>bundle computes</a>"| CDLR{{"<span style='display:block; height:0.5em'></span>Nontrivial discrete-log<br/>relation, combined<br/>deployed basis (Pallas)<span style='display:block; height:0.5em'></span>"}}
+  BS --->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/ExtractionArm.lean'>verifying signature<br/>the extractor misses</a>"| KERR["RedDSA<br/>extractability"]
+  BS --> STMT["Witness or replay<br/>evidence<br/>ActionSatisfied"]
+  NCB --->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Statement.lean'>wrong note<br/>opening computes</a>"| NCBK["NoteCommitBreak"]
+  NCB --> STMT
+  MERK --> STMT
+  MERK --->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Merkle.lean'>wrong Merkle<br/>path computes</a>"| MC["DefinedCollision<br/>one height,<br/>encoding domain"]
+  KB --> STMT
+  KB --->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/KeyBindingDLR.lean'>Orchard-protocol<br/>CommitIvkCollision<br/>computes</a>"| CDLR
+
+  STMT STMTtoKS@-->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/OrchardExtractionExperiment.lean'>Extract witness-<br/>annotated chain</a>"| KS["Knowledge soundness:<br/>accepting proof yields<br/>witness or break data"]
+  NCBK --> CDLR
+
+  KERR KERRtoCDLR@==>|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/RedDSA/Extraction.lean'>good challenge<br/>computes</a>"| CDLR
+  CDLR -->|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Security/BindingSignature/DiscreteLog.lean'>independent<br/>Pallas bases</a>"| DL
+  KS KStoDL@===>|"<a target='_blank' href='https://github.com/zcash/ironwood/blob/main/Zcash/Snark/Soundness/Action/AdaptiveStatementKnowledge.lean'>independent<br/>Vesta bases</a>"| DL
+  MC --> CDLR
+
+  click BAL "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Balance.lean" _blank
+  click BS "https://github.com/zcash/ironwood/blob/main/Zcash/Security/BindingSignature/Balance.lean" _blank
+  click NCB "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Statement.lean" _blank
+  click MERK "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Merkle.lean" _blank
+  click KB "https://github.com/zcash/ironwood/blob/main/Zcash/Security/KeyBinding/Basic.lean" _blank
+  click STMT "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Statement.lean" _blank
+  click NCBK "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Statement.lean" _blank
+  click MC "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/Merkle.lean" _blank
+  click CDLR "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/SinsemillaDLR.lean" _blank
+  click KS "https://github.com/zcash/ironwood/blob/main/Zcash/Snark/Soundness/Relation/KnowledgeSoundness.lean" _blank
+  click DL "https://github.com/zcash/ironwood/blob/main/Zcash/Common/DiscreteLogRelation.lean" _blank
+  click KERR "https://github.com/zcash/ironwood/blob/main/Zcash/Security/Ledger/ExtractionKnowledgeError.lean" _blank
+
+  classDef checked fill:#e8e8ff,stroke:#101060,color:#000000
+  classDef assumed fill:#57606a,stroke:#424a53,color:#ffffff
+  class BAL,NCB,BS,KB,MERK,STMT,CDLR,NCBK,MC,KERR,KS checked
+  class DL assumed
+  classDef agmEdge stroke:#8858c8,stroke-width:4.2px
+  class KERRtoCDLR,KStoDL,STMTtoKS agmEdge
