@@ -1,0 +1,9 @@
+# marp-cli engine options (auto-detected from this directory).
+# breaks: false stops single source newlines rendering as <br>, so hard-wrapped
+# paragraphs reflow to the slide width; use an explicit <br/> where a line
+# break is really wanted.
+# The engine adds pre-rendered Mermaid diagrams (see marp-engine.mjs).
+engine: ./marp-engine.mjs
+options:
+  markdown:
+    breaks: false
