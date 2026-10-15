@@ -294,23 +294,20 @@ timeouts (2).
 
 # Results, 2: evaluation
 
-The held-out pins, rewritten as `assert_efficient` at the frozen machinery, one build:
-
-| | just works | fails at the frozen machinery |
+| held-out pins, one build | just works | fails at the frozen machinery |
 |---|:---:|:---:|
 | Ironwood (110) | **41** | 69 |
 | CompElliptic (10) | **7** | 3 |
 | total (120) | **48** | 72 |
 
-The 69 Ironwood failures: functions bound by lambdas or patterns (39); `Int.natAbs` (8);
-fields of non-parameter structures (6); methods on instance variables (5); partial applications
-(4); quotients (4); timeouts (3). CompElliptic's three: quotients.
+Ironwood's 69 failures: functions bound by lambdas or patterns (39); `Int.natAbs` (8); fields of
+non-parameter structures (6); methods on instance variables (5); partial applications (4);
+quotients (4); timeouts (3). CompElliptic's three: quotients.
 
 No kind is new: each already appears among the development leftovers. Registered costs for the
 three named primitives rescue none; each caller then stops at the next unsupported shape.
 
-Development: 50 of 112 after eleven rounds of fitting. Evaluation: 48 of 120 at the first build;
-CompElliptic's nine development pins, never fitted against, all pass.
+Fitted: 50 of 112. Unfitted: 48 of 120, and CompElliptic's nine development pins all pass.
 
 ---
 
